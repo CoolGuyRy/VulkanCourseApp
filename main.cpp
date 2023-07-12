@@ -9,16 +9,6 @@
 GLFWwindow* gWindow;
 VulkanRenderer vulkanRenderer;
 
-const std::vector<const char*> validationLayers = {
-	"VK_LAYER_KHRONOS_validation"
-};
-
-#ifdef NDEBUG
-	const bool enableValidationLayers = false;
-#else
-	const bool enableValidationLayers = true;
-#endif
-
 void initWindow(std::string wName = "Vulkan Window", const int width = 800, const int height = 600) {
 	// Initialize GLFW
 	glfwInit();
@@ -53,7 +43,7 @@ int main() {
 	// Terminate GLFW
 	glfwTerminate();
 
-	std::cout << "Press enter to exit program..."; std::cin.get();
+	std::cout << "Enter a nice message to leave the program: "; std::cin.get();
 
 	return 0;
 }

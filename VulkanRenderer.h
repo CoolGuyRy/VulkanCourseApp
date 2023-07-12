@@ -7,6 +7,15 @@
 
 #include "Utilities.h"
 
+const std::vector<const char*> validationLayers = {
+	"VK_LAYER_KHRONOS_validation"
+};
+#ifdef NDEBUG
+const bool enableValidationLayers = false;
+#else
+const bool enableValidationLayers = true;
+#endif
+
 class VulkanRenderer {
 public:
 	VulkanRenderer();
@@ -29,11 +38,11 @@ private:
 	void createInstance();
 	void createLogicalDevice();
 
-
 	void getPhysicalDevice();
 
 	bool checkInstanceExtensionSupport(std::vector<const char*>* checkExtensions);
 	bool checkDeviceSuitable(VkPhysicalDevice device);
+	bool checkValidationLayerSupport();
 
 	QueueFamilyIndices getQueueFamilies(VkPhysicalDevice device);
 };
