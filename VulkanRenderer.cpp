@@ -3,6 +3,7 @@
 VulkanRenderer::VulkanRenderer() {
 	window = nullptr;
 	instance = nullptr;
+	graphicsQueue = nullptr;
 
 	mainDevice = { };
 }
