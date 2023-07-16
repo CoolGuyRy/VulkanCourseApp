@@ -6,6 +6,7 @@
 #include <iostream>
 #include <set>
 #include <algorithm>
+#include <array>
 
 #include "Utilities.h"
 
@@ -40,6 +41,10 @@ private:
 	VkSwapchainKHR swapchain;
 	std::vector<SwapchainImage> swapChainImages;
 
+	VkPipeline graphicsPipeline;
+	VkPipelineLayout pipelineLayout;
+	VkRenderPass renderPass;
+
 	// Utility Vulkan Components
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
@@ -49,6 +54,7 @@ private:
 	void createLogicalDevice();
 	void createSurface();
 	void createSwapChain();
+	void createRenderPass();
 	void createGraphicsPipeline();
 
 	void getPhysicalDevice();
@@ -67,4 +73,36 @@ private:
 
 	VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
 	VkShaderModule createShaderModule(const std::vector<char>& code);
+
+	void DebugInformation() {
+		uint32_t instanceExtensionCount = 0;
+		vkEnumerateInstanceExtensionProperties(nullptr, &instanceExtensionCount, nullptr);
+
+		std::vector<VkExtensionProperties> instanceExtensions(instanceExtensionCount);
+		vkEnumerateInstanceExtensionProperties(nullptr, &instanceExtensionCount, instanceExtensions.data());
+
+		std::cout << "Available Vulkan instance extensions:\n";
+		for (const auto& extension : instanceExtensions) {
+			std::cout << '\t' << extension.extensionName << '\n';
+		}
+
+		uint32_t deviceCount = 0;
+		vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
+
+		std::vector<VkPhysicalDevice> devices(deviceCount);
+		vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
+
+		for (const auto& device : devices) {
+			uint32_t deviceExtensionCount = 0;
+			vkEnumerateDeviceExtensionProperties(device, nullptr, &deviceExtensionCount, nullptr);
+
+			std::vector<VkExtensionProperties> deviceExtensions(deviceExtensionCount);
+			vkEnumerateDeviceExtensionProperties(device, nullptr, &deviceExtensionCount, deviceExtensions.data());
+
+			std::cout << "Available Vulkan device extensions:\n";
+			for (const auto& extension : deviceExtensions) {
+				std::cout << '\t' << extension.extensionName << '\n';
+			}
+		}
+	}
 };
