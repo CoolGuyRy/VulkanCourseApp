@@ -39,11 +39,17 @@ private:
 	VkQueue presentationQueue;
 	VkSurfaceKHR surface;
 	VkSwapchainKHR swapchain;
+
+	// These three are interconnected swapChainImages[0] uses swapChainFramebuffers[0] and commandBuffers[0] and so on
 	std::vector<SwapchainImage> swapChainImages;
+	std::vector<VkFramebuffer> swapChainFramebuffers;
+	std::vector<VkCommandBuffer> commandBuffers;
 
 	VkPipeline graphicsPipeline;
 	VkPipelineLayout pipelineLayout;
 	VkRenderPass renderPass;
+
+	VkCommandPool graphicsCommandPool;
 
 	// Utility Vulkan Components
 	VkFormat swapChainImageFormat;
@@ -56,6 +62,11 @@ private:
 	void createSwapChain();
 	void createRenderPass();
 	void createGraphicsPipeline();
+	void createFramebuffers();
+	void createCommandPool();
+	void createCommandBuffers();
+
+	void recordCommands();
 
 	void getPhysicalDevice();
 
