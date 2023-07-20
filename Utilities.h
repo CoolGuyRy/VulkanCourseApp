@@ -1,5 +1,7 @@
 #pragma once
 
+const int MAX_FRAMES_DRAWS = 2;
+
 #include <fstream>
 
 const std::vector<const char*> deviceExtensions = {
