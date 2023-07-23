@@ -9,6 +9,7 @@
 #include <array>
 
 #include "Utilities.h"
+#include "Mesh.h"
 
 const std::vector<const char*> validationLayers = {
 	"VK_LAYER_KHRONOS_validation"
@@ -31,6 +32,9 @@ private:
 	GLFWwindow* window;
 
 	int currentFrame = 0;
+
+	// Scene Objects
+	Mesh firstMesh;
 
 	// Main Vulkan Components
 	VkInstance instance;

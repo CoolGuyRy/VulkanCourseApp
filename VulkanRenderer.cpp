@@ -29,6 +29,19 @@ int VulkanRenderer::init(GLFWwindow* newWindow) {
 		createSurface();
 		getPhysicalDevice();
 		createLogicalDevice();
+
+		// Create a mesh
+		std::vector<Vertex> meshVertices = {
+			{{0.4, -0.4, 0.0}, {1.0, 0.0, 0.0}},
+			{{0.4, 0.4, 0.0}, {0.0, 1.0, 0.0}},
+			{{-0.4, 0.4, 0.0}, {0.0, 0.0, 1.0}},
+
+			{{-0.4, 0.4, 0.0}, {0.0, 0.0, 1.0}},
+			{{-0.4, -0.4, 0.0}, {1.0, 1.0, 0.0}},
+			{{0.4, -0.4, 0.0}, {1.0, 0.0, 0.0}}
+		};
+		firstMesh = Mesh(mainDevice.physicalDevice, mainDevice.logicalDevice, &meshVertices);
+
 		createSwapChain();
 		createRenderPass();
 		createGraphicsPipeline();
@@ -102,6 +115,9 @@ void VulkanRenderer::cleanup() {
 	vkDeviceWaitIdle(mainDevice.logicalDevice);
 	//vkQueueWaitIdle(graphicsQueue);
 	//vkQueueWaitIdle(presentationQueue);
+
+	firstMesh.destroyVertexBuffer();
+
 	for (size_t i = 0; i < MAX_FRAMES_DRAWS; i++) {
 		vkDestroySemaphore(mainDevice.logicalDevice, renderFinished[i], nullptr);
 		vkDestroySemaphore(mainDevice.logicalDevice, imageAvailable[i], nullptr);
@@ -437,13 +453,35 @@ void VulkanRenderer::createGraphicsPipeline() {
 
 	// Create Pipeline
 
-	// Vertex Input (TODO: Put in vertex descriptions when resources created)
+	// How the data for a single vertex (including input such as position, color, tex coords, normals, etc) is as a whole
+	VkVertexInputBindingDescription bindingDescription = { };
+	bindingDescription.binding = 0;									// Can bind multiple streams of data, this defines which one
+	bindingDescription.stride = sizeof(Vertex);						// Size of a single vertex object
+	bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;		// Am I using instancing or not?	(if so, flagging this will reset vertex position)
+
+	// How the data for an attribute is defined within a vertex
+	std::array<VkVertexInputAttributeDescription, 2> attributeDescriptions = { };
+
+	// Position Attribute
+	attributeDescriptions[0].binding = 0;							// Which binding the data is at (should be the same as above)
+	attributeDescriptions[0].location = 0;							// Location in shader where data will be read from
+	attributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;	// Format the data will take (also helps define the size of the data)
+	attributeDescriptions[0].offset = offsetof(Vertex, pos);		// Similar concept to the stride part. Need to know where to start if multiple attributes are part of the buffer
+																	// offsetof(s, m) is a very interesting function. I did not know this exists. Worth remembering...
+
+	// Color Attribute
+	attributeDescriptions[1].binding = 0;
+	attributeDescriptions[1].location = 1;
+	attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
+	attributeDescriptions[1].offset = offsetof(Vertex, col);
+
+	// Vertex Input
 	VkPipelineVertexInputStateCreateInfo vertexInputCreateInfo = { };
 	vertexInputCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-	vertexInputCreateInfo.vertexBindingDescriptionCount = 0;
-	vertexInputCreateInfo.pVertexBindingDescriptions = nullptr;				// List of Vertex Binding Descriptions (data spacing / stride info)
-	vertexInputCreateInfo.vertexAttributeDescriptionCount = 0;
-	vertexInputCreateInfo.pVertexAttributeDescriptions = nullptr;			// List of Vertex Attribut Descriptions (data format and where to bind to/from)
+	vertexInputCreateInfo.vertexBindingDescriptionCount = 1;
+	vertexInputCreateInfo.pVertexBindingDescriptions = &bindingDescription;											// List of Vertex Binding Descriptions (data spacing / stride info)
+	vertexInputCreateInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
+	vertexInputCreateInfo.pVertexAttributeDescriptions = attributeDescriptions.data();								// List of Vertex Attribut Descriptions (data format and where to bind to/from)
 
 	// Input Assembler
 	VkPipelineInputAssemblyStateCreateInfo inputAssembly = { };
@@ -666,7 +704,7 @@ void VulkanRenderer::recordCommands() {
 	renderPassBeginInfo.renderArea.extent = swapChainExtent;					// size of region to run render pass on (starting at offset)
 	renderPassBeginInfo.clearValueCount = 1;
 	VkClearValue clearValues[] = {												// TODO: Add depth attachment
-		{0.6f, 0.65f, 0.4f, 1.0f }
+		{ 36/255.0f, 47/255.0f, 87/255.0f, 1.0f }
 	};
 	renderPassBeginInfo.pClearValues = clearValues;
 
@@ -686,7 +724,11 @@ void VulkanRenderer::recordCommands() {
 				vkCmdBindPipeline(commandBuffers.at(i), VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 				// Can add mutliple bind pipeline cmd calls. Useful for doing deferred shading.
 
-				vkCmdDraw(commandBuffers.at(i), 3, 1, 0, 0);
+				VkBuffer vertexBuffers[] = { firstMesh.getVertexBuffer() };						// Buffers to bind
+				VkDeviceSize offsets[] = { 0 };													// offsets into buffers being bound
+				vkCmdBindVertexBuffers(commandBuffers.at(i), 0, 1, vertexBuffers, offsets);		// Command to bind vertex buffer before drawing with them
+
+				vkCmdDraw(commandBuffers.at(i), static_cast<uint32_t>(firstMesh.getVertexCount()), 1, 0, 0);
 
 			vkCmdEndRenderPass(commandBuffers.at(i));
 
