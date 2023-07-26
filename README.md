@@ -7,3 +7,6 @@ This GitHub repo will track my progress as I learn the Vulkan API. I will be Fol
 
 ### Multiple Meshes!
 ![Multiple Meshes!](https://github.com/CoolGuyRy/VulkanCourseApp/assets/86322787/f11ac302-9942-44e3-bc6a-b166bdea9897)
+
+### Uniform Descriptor Demo!
+https://github.com/CoolGuyRy/VulkanCourseApp/assets/86322787/b52a136b-e3ee-4211-8121-d1f929e63525
