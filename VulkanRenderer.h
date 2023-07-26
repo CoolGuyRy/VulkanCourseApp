@@ -8,6 +8,9 @@
 #include <algorithm>
 #include <array>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "Utilities.h"
 #include "Mesh.h"
 
@@ -26,6 +29,9 @@ public:
 	~VulkanRenderer();
 
 	int init(GLFWwindow* newWindow);
+
+	void updateModel(glm::mat4 newModel);
+
 	void draw();
 	void cleanup();
 private:
@@ -35,6 +41,13 @@ private:
 
 	// Scene Objects
 	std::vector<Mesh> meshList;
+
+	// Scene Settings
+	struct MVP {
+		glm::mat4 projection;
+		glm::mat4 view;
+		glm::mat4 model;
+	} mvp;
 
 	// Main Vulkan Components
 	VkInstance instance;
@@ -51,6 +64,15 @@ private:
 	std::vector<SwapchainImage> swapChainImages;
 	std::vector<VkFramebuffer> swapChainFramebuffers;
 	std::vector<VkCommandBuffer> commandBuffers;
+
+	// Descriptors
+	VkDescriptorSetLayout descriptorSetLayout;
+	
+	VkDescriptorPool descriptorPool;
+	std::vector<VkDescriptorSet> descriptorSets;
+
+	std::vector<VkBuffer> uniformBuffer;
+	std::vector<VkDeviceMemory> uniformBufferMemory;
 
 	VkPipeline graphicsPipeline;
 	VkPipelineLayout pipelineLayout;
@@ -72,11 +94,18 @@ private:
 	void createSurface();
 	void createSwapChain();
 	void createRenderPass();
+	void createDescriptorSetLayout();
 	void createGraphicsPipeline();
 	void createFramebuffers();
 	void createCommandPool();
 	void createCommandBuffers();
 	void createSynchronization();
+
+	void createUniformBuffers();
+	void createDescriptorPool();
+	void createDescriptorSets();
+
+	void updateUniformBuffer(uint32_t imageIndex);
 
 	void recordCommands();
 

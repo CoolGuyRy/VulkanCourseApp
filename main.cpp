@@ -22,6 +22,10 @@ void initWindow(std::string wName = "Vulkan Window", const int width = 800, cons
 	gWindow = glfwCreateWindow(width, height, wName.c_str(), nullptr, nullptr);
 }
 
+float angle = 0.0f;
+float deltaTime = 0.0f;
+float lastTime = 0.0f;
+
 int main() {
 	// Create a window
 	initWindow("Vulkan Window", 800, 600);
@@ -32,7 +36,15 @@ int main() {
 	}
 
 	while (!glfwWindowShouldClose(gWindow)) {
+		float now = glfwGetTime();
+		deltaTime = now - lastTime;
+		lastTime = now;
+
 		glfwPollEvents();
+
+		angle = angle + 30.0f * deltaTime;
+
+		vulkanRenderer.updateModel(glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(0.0, 0.0, 1.0)));
 		vulkanRenderer.draw();
 	}
 
