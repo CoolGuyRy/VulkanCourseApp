@@ -16,6 +16,9 @@ VulkanRenderer::VulkanRenderer() {
 	descriptorPool = nullptr;
 	descriptorSetLayout = nullptr;
 	uboViewProjection = { };
+	minUniformBufferOffset = 0;
+	modelUniformAlignment = 0;
+	modelTransferSpace = nullptr;
 
 	mainDevice = { };
 }
@@ -951,7 +954,7 @@ void VulkanRenderer::recordCommands() {
 					vkCmdBindIndexBuffer(commandBuffers.at(i), meshList.at(j).getIndexBuffer(), 0, VK_INDEX_TYPE_UINT32);	// Command to bind Mesh Index Buffer with 0 offset
 
 					// Dynamic Offset Amount
-					uint32_t dynamicOffset = static_cast<uint32_t>(modelUniformAlignment) * j;
+					uint32_t dynamicOffset = static_cast<uint32_t>(modelUniformAlignment * j);
 
 					// Bind Descriptor Sets
 					vkCmdBindDescriptorSets(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &descriptorSets[i], 1, &dynamicOffset);
