@@ -10,3 +10,7 @@ This GitHub repo will track my progress as I learn the Vulkan API. I will be Fol
 
 ### Uniform Descriptor Demo!
 https://github.com/CoolGuyRy/VulkanCourseApp/assets/86322787/b52a136b-e3ee-4211-8121-d1f929e63525
+
+### Dynamic Uniform Descriptor Demo!
+https://github.com/CoolGuyRy/VulkanCourseApp/assets/86322787/abaa37bd-748f-4b1f-963a-07ccc66aad39
+
