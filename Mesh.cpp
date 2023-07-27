@@ -8,7 +8,7 @@ Mesh::Mesh() : vertexCount(0), indexCount(0) {
 	indexBuffer = nullptr;
 	indexBufferMemory = nullptr;
 
-	uboModel.model = glm::mat4(1.0f);
+	model.model = glm::mat4(1.0f);
 }
 
 Mesh::Mesh(VkPhysicalDevice newPhysicalDevice, VkDevice newDevice, VkQueue transferQueue, VkCommandPool transferCommandPool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices) {
@@ -19,15 +19,15 @@ Mesh::Mesh(VkPhysicalDevice newPhysicalDevice, VkDevice newDevice, VkQueue trans
 	createVertexBuffer(transferQueue, transferCommandPool, vertices);
 	createIndexBuffer(transferQueue, transferCommandPool, indices);
 
-	uboModel.model = glm::mat4(1.0f);
+	model.model = glm::mat4(1.0f);
 }
 
-void Mesh::setModel(glm::mat4 newModel) {
-	uboModel.model = newModel;
+void Mesh::setModel(glm::mat4 newmodel) {
+	model.model = newmodel;
 }
 
-UboModel Mesh::getModel() {
-	return uboModel;
+Model Mesh::getModel() {
+	return model;
 }
 
 int Mesh::getVertexCount() {
