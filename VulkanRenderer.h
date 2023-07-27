@@ -30,7 +30,7 @@ public:
 
 	int init(GLFWwindow* newWindow);
 
-	void updateModel(glm::mat4 newModel);
+	void updateModel(int modelId, glm::mat4 newModel);
 
 	void draw();
 	void cleanup();
@@ -43,11 +43,10 @@ private:
 	std::vector<Mesh> meshList;
 
 	// Scene Settings
-	struct MVP {
+	struct UboViewProjection {
 		glm::mat4 projection;
 		glm::mat4 view;
-		glm::mat4 model;
-	} mvp;
+	} uboViewProjection;
 
 	// Main Vulkan Components
 	VkInstance instance;
@@ -73,6 +72,13 @@ private:
 
 	std::vector<VkBuffer> uniformBuffer;
 	std::vector<VkDeviceMemory> uniformBufferMemory;
+
+	std::vector<VkBuffer> dynamicUniformBuffer;
+	std::vector<VkDeviceMemory> dynamicUniformBufferMemory;
+
+	VkDeviceSize minUniformBufferOffset;
+	size_t modelUniformAlignment;
+	UboModel* modelTransferSpace;
 
 	VkPipeline graphicsPipeline;
 	VkPipelineLayout pipelineLayout;
@@ -105,11 +111,13 @@ private:
 	void createDescriptorPool();
 	void createDescriptorSets();
 
-	void updateUniformBuffer(uint32_t imageIndex);
+	void updateUniformBuffers(uint32_t imageIndex);
 
 	void recordCommands();
 
 	void getPhysicalDevice();
+
+	void allocateDynamicBufferTransferSpace();
 
 	bool checkInstanceExtensionSupport(std::vector<const char*>* checkExtensions);
 	bool checkDeviceSuitable(VkPhysicalDevice device);
