@@ -1,3 +1,5 @@
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 #include <stdexcept>
@@ -47,11 +49,11 @@ int main() {
 		glm::mat4 firstModel(1.0f);
 		glm::mat4 secondModel(1.0f);
 
-		firstModel = glm::translate(firstModel, glm::vec3(-1.0f, 0.0f, -3.0f));
+		firstModel = glm::translate(firstModel, glm::vec3(0.0f, 0.0f, -2.0f));
 		firstModel = glm::rotate(firstModel, glm::radians((float)angle), glm::vec3(0.0, 0.0, 1.0));
 
-		secondModel = glm::translate(secondModel, glm::vec3(1.0f, 0.0f, -3.0f));
-		secondModel = glm::rotate(secondModel, glm::radians((float)-angle * 2.0f), glm::vec3(0.0, 0.0, 1.0));
+		secondModel = glm::translate(secondModel, glm::vec3(0.0f, 0.0f, -2.0 + sinf(angle * 0.05)));
+		secondModel = glm::rotate(secondModel, glm::radians((float)-angle * 2.0f), glm::vec3(0.0, 1.0, 1.0));
 
 		vulkanRenderer.updateModel(0, firstModel);
 		vulkanRenderer.updateModel(1, secondModel);
