@@ -17,6 +17,9 @@ VulkanRenderer::VulkanRenderer() {
 	descriptorSetLayout = nullptr;
 	uboViewProjection = { };
 	pushConstantRange = { };
+	depthBufferImage = nullptr;
+	depthBufferImageMemory = nullptr;
+	depthBufferImageView = nullptr;
 	//minUniformBufferOffset = 0;
 	//modelUniformAlignment = 0;
 	//modelTransferSpace = nullptr;
