@@ -19,3 +19,6 @@ https://github.com/CoolGuyRy/VulkanCourseApp/assets/86322787/7f84fa46-b007-4759-
 
 ### Texture Demo!
 https://github.com/CoolGuyRy/VulkanCourseApp/assets/86322787/61b80960-c698-4e12-9648-812de98ef3a5
+
+### Model Loading Demo!
+https://github.com/CoolGuyRy/VulkanCourseApp/assets/86322787/11656e46-ae41-48af-a9f1-337b17b416fe
