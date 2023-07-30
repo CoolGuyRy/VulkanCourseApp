@@ -1,11 +1,10 @@
+#define STB_IMAGE_IMPLEMENTATION
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
-
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 #include <stdexcept>
 #include <vector>
 #include <iostream>
-
 #include "VulkanRenderer.h"
 
 GLFWwindow* gWindow;
@@ -52,7 +51,7 @@ int main() {
 		firstModel = glm::translate(firstModel, glm::vec3(0.0f, 0.0f, -2.0f));
 		firstModel = glm::rotate(firstModel, glm::radians((float)angle), glm::vec3(0.0, 0.0, 1.0));
 
-		secondModel = glm::translate(secondModel, glm::vec3(0.0f, 0.0f, -2.0 + sinf(angle * 0.05)));
+		secondModel = glm::translate(secondModel, glm::vec3(0.0f, 0.0f, -2.0 + sinf((float)angle * 0.05f)));
 		secondModel = glm::rotate(secondModel, glm::radians((float)-angle * 2.0f), glm::vec3(0.0, 1.0, 1.0));
 
 		vulkanRenderer.updateModel(0, firstModel);

@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <array>
 
+#include "stb_image.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -58,6 +60,7 @@ private:
 	VkQueue presentationQueue;
 	VkSurfaceKHR surface;
 	VkSwapchainKHR swapchain;
+	VkSampler textureSampler;
 
 	// These three are interconnected swapChainImages[0] uses swapChainFramebuffers[0] and commandBuffers[0] and so on
 	std::vector<SwapchainImage> swapChainImages;
@@ -70,10 +73,13 @@ private:
 
 	// Descriptors
 	VkDescriptorSetLayout descriptorSetLayout;
+	VkDescriptorSetLayout samplerSetLayout;
 	VkPushConstantRange pushConstantRange;
 
 	VkDescriptorPool descriptorPool;
+	VkDescriptorPool samplerDescriptorPool;
 	std::vector<VkDescriptorSet> descriptorSets;
+	std::vector<VkDescriptorSet> samplerDescriptorSets;
 
 	std::vector<VkBuffer> uniformBuffer;
 	std::vector<VkDeviceMemory> uniformBufferMemory;
@@ -85,6 +91,11 @@ private:
 	/*VkDeviceSize minUniformBufferOffset;
 	size_t modelUniformAlignment;*/
 	//Model* modelTransferSpace;
+
+	// Assets
+	std::vector<VkImage> textureImages;
+	std::vector<VkDeviceMemory> textureImageMemory;
+	std::vector<VkImageView> textureImageViews;
 
 	VkPipeline graphicsPipeline;
 	VkPipelineLayout pipelineLayout;
@@ -114,6 +125,7 @@ private:
 	void createCommandPool();
 	void createCommandBuffers();
 	void createSynchronization();
+	void createTextureSampler();
 
 	void createUniformBuffers();
 	void createDescriptorPool();
@@ -143,6 +155,12 @@ private:
 	VkImage createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags useFlags, VkMemoryPropertyFlags propFlags, VkDeviceMemory* imageMemory);
 	VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
 	VkShaderModule createShaderModule(const std::vector<char>& code);
+
+	int createTextureImage(std::string fileName);
+	int createTexture(std::string fileName);
+	int createTextureDescriptor(VkImageView textureImage);
+
+	stbi_uc* loadTextureFile(std::string fileName, int* width, int* height, VkDeviceSize* imageSize);
 
 	void DebugInformation() {
 		uint32_t instanceExtensionCount = 0;

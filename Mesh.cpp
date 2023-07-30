@@ -7,11 +7,12 @@ Mesh::Mesh() : vertexCount(0), indexCount(0) {
 	vertexBufferMemory = nullptr;
 	indexBuffer = nullptr;
 	indexBufferMemory = nullptr;
+	texId = -1;
 
 	model.model = glm::mat4(1.0f);
 }
 
-Mesh::Mesh(VkPhysicalDevice newPhysicalDevice, VkDevice newDevice, VkQueue transferQueue, VkCommandPool transferCommandPool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices) {
+Mesh::Mesh(VkPhysicalDevice newPhysicalDevice, VkDevice newDevice, VkQueue transferQueue, VkCommandPool transferCommandPool, std::vector<Vertex>* vertices, std::vector<uint32_t>* indices, int newTexId) {
 	vertexCount = (int)vertices->size();
 	indexCount = (int)indices->size();
 	physicalDevice = newPhysicalDevice;
@@ -20,6 +21,7 @@ Mesh::Mesh(VkPhysicalDevice newPhysicalDevice, VkDevice newDevice, VkQueue trans
 	createIndexBuffer(transferQueue, transferCommandPool, indices);
 
 	model.model = glm::mat4(1.0f);
+	texId = newTexId;
 }
 
 void Mesh::setModel(glm::mat4 newmodel) {
@@ -28,6 +30,10 @@ void Mesh::setModel(glm::mat4 newmodel) {
 
 Model Mesh::getModel() {
 	return model;
+}
+
+int Mesh::getTexId() {
+	return texId;
 }
 
 int Mesh::getVertexCount() {
