@@ -16,3 +16,6 @@ https://github.com/CoolGuyRy/VulkanCourseApp/assets/86322787/7469ebbd-a2ce-4170-
 
 ### Depth Buffer Demo!
 https://github.com/CoolGuyRy/VulkanCourseApp/assets/86322787/7f84fa46-b007-4759-bd23-0574c4376398
+
+### Texture Demo!
+https://github.com/CoolGuyRy/VulkanCourseApp/assets/86322787/61b80960-c698-4e12-9648-812de98ef3a5
