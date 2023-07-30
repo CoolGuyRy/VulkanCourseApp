@@ -1,7 +1,7 @@
 #pragma once
 
 const int MAX_FRAMES_DRAWS = 2;
-const int MAX_OBJECTS = 2;
+const int MAX_OBJECTS = 20;
 
 #include <fstream>
 

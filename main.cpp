@@ -36,6 +36,8 @@ int main() {
 		return EXIT_FAILURE;
 	}
 
+	int modelLoc = vulkanRenderer.createMeshModel("Models/scene.gltf");
+
 	while (!glfwWindowShouldClose(gWindow)) {
 		double now = glfwGetTime();
 		deltaTime = now - lastTime;
@@ -45,17 +47,11 @@ int main() {
 
 		angle = angle + 30.0f * deltaTime;
 
-		glm::mat4 firstModel(1.0f);
-		glm::mat4 secondModel(1.0f);
+		glm::mat4 testMat(1.0f);
+		testMat = glm::rotate(testMat, glm::radians(180 + -(float)angle), glm::vec3(0.0, 1.0, 0.0)); 
+		testMat = glm::rotate(testMat, glm::radians(15.0f * 9), glm::vec3(1.0, 0.0, 0.0));
 
-		firstModel = glm::translate(firstModel, glm::vec3(0.0f, 0.0f, -2.0f));
-		firstModel = glm::rotate(firstModel, glm::radians((float)angle), glm::vec3(0.0, 0.0, 1.0));
-
-		secondModel = glm::translate(secondModel, glm::vec3(0.0f, 0.0f, -2.0 + sinf((float)angle * 0.05f)));
-		secondModel = glm::rotate(secondModel, glm::radians((float)-angle * 2.0f), glm::vec3(0.0, 1.0, 1.0));
-
-		vulkanRenderer.updateModel(0, firstModel);
-		vulkanRenderer.updateModel(1, secondModel);
+		vulkanRenderer.updateModel(modelLoc, testMat);
 
 		vulkanRenderer.draw();
 	}

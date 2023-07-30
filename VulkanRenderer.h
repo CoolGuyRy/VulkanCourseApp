@@ -13,8 +13,13 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 #include "Utilities.h"
 #include "Mesh.h"
+#include "MeshModel.h"
 
 const std::vector<const char*> validationLayers = {
 	"VK_LAYER_KHRONOS_validation"
@@ -32,6 +37,8 @@ public:
 
 	int init(GLFWwindow* newWindow);
 
+	int createMeshModel(std::string modelFile);
+
 	void updateModel(int modelId, glm::mat4 newModel);
 
 	void draw();
@@ -42,7 +49,7 @@ private:
 	int currentFrame = 0;
 
 	// Scene Objects
-	std::vector<Mesh> meshList;
+	std::vector<MeshModel> modelList;
 
 	// Scene Settings
 	struct UboViewProjection {
