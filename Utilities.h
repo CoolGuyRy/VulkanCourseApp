@@ -34,8 +34,8 @@ struct QueueFamilyIndices {
 
 struct SwapChainDetails {
 	VkSurfaceCapabilitiesKHR surfaceCapabilities = {};		// Surface Properties, e.g. image size / extent
-	std::vector<VkSurfaceFormatKHR>	formats;			// Surface Image Formats, e.g. rgba and size of each channel
-	std::vector<VkPresentModeKHR> presentationModes;	// How Images should be presented to screen
+	std::vector<VkSurfaceFormatKHR>	formats;				// Surface Image Formats, e.g. rgba and size of each channel
+	std::vector<VkPresentModeKHR> presentationModes;		// How Images should be presented to screen
 
 	SwapChainDetails() {}
 };

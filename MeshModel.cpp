@@ -54,7 +54,7 @@ std::vector<std::string> MeshModel::LoadMaterials(const aiScene* scene) {
 			aiString path;
 			if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
 				// Cut off any directory information already present
-				int idx = std::string(path.data).rfind("\\");
+				size_t idx = std::string(path.data).rfind("\\");
 				std::string fileName = std::string(path.data).substr(idx + 1);
 
 				textureList[i] = fileName;

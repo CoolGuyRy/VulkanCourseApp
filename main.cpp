@@ -29,14 +29,14 @@ double lastTime = 0.0;
 
 int main() {
 	// Create a window
-	initWindow("Vulkan Window", 800, 600);
+	initWindow("Vulkan Window", 1280, 960);
 
 	// Create Vulkan Renderer instance
 	if (vulkanRenderer.init(gWindow) == EXIT_FAILURE) {
 		return EXIT_FAILURE;
 	}
 
-	int modelLoc = vulkanRenderer.createMeshModel("Models/scene.gltf");
+	int modelLoc = vulkanRenderer.createMeshModel("Models/kitbash.gltf");
 
 	while (!glfwWindowShouldClose(gWindow)) {
 		double now = glfwGetTime();
@@ -48,8 +48,10 @@ int main() {
 		angle = angle + 30.0f * deltaTime;
 
 		glm::mat4 testMat(1.0f);
-		testMat = glm::rotate(testMat, glm::radians(180 + -(float)angle), glm::vec3(0.0, 1.0, 0.0)); 
-		testMat = glm::rotate(testMat, glm::radians(15.0f * 9), glm::vec3(1.0, 0.0, 0.0));
+		testMat = glm::rotate(testMat, glm::radians(180 + -(float)angle * 0.5f), glm::vec3(0.0, 1.0, 0.0));
+		testMat = glm::translate(testMat, glm::vec3(0.0, -30.0, 0.0));
+		//testMat = glm::rotate(testMat, glm::radians(15.0f * 9), glm::vec3(1.0, 0.0, 0.0));
+		testMat = glm::scale(testMat, glm::vec3(40.0, 40.0, 40.0));
 
 		vulkanRenderer.updateModel(modelLoc, testMat);
 
