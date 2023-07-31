@@ -1,6 +1,6 @@
 # Learning Vulkan Project
 
-This GitHub repo will track my progress as I learn the Vulkan API. I will be Following [this course.](https://www.udemy.com/course/learn-the-vulkan-api-with-cpp/) Attached below will be "Progress Pictures" of what I have created.
+This GitHub repo tracked my progress as I learned the Vulkan API. I followed [this course.](https://www.udemy.com/course/learn-the-vulkan-api-with-cpp/) Attached below are the "Progress Pictures" of what I have created.
 
 ### Buffer Code Working! 
 ![Buffer Code Working!](https://github.com/CoolGuyRy/VulkanCourseApp/assets/86322787/30280352-bcf5-4160-89da-7080337a5871)
